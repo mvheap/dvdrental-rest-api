@@ -1,7 +1,7 @@
 namespace dvd_rental_api.Utils;
 public static class Utilities
 {
-    public static readonly Dictionary<string, int> languageIds = new Dictionary<string, int>()
+    public static readonly Dictionary<string, short> languageIds = new Dictionary<string, short>()
     {
         {"english", 1},
         {"italian", 2},
