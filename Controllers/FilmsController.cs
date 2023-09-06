@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using dvd_rental_api.Models;
+using dvd_rental_api.Utils;
 
 namespace dvd_rental_api.Controllers;
 
@@ -17,12 +18,32 @@ public class FilmsController : ControllerBase
 
     // GET films/
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Film>>> GetFilms(int limit = 200, int year = 0)
+    public async Task<ActionResult<IEnumerable<Film>>> GetFilms(int limit = 200, int year = 0, string language = null)
     {
         if (year != 0)
         {
-            return await _context.Films.Where(f => f.ReleaseYear == year).OrderBy(f => f.Title).ToListAsync();
+            return await _context.Films
+            .Where(f => f.ReleaseYear == year)
+            .OrderBy(f => f.Title)
+            .Take(limit)
+            .ToListAsync();
         }
+
+        if (language is not null)
+        {
+            language = language.ToLower();
+            if (Utilities.languageIds.ContainsKey(language))
+            {
+                return await _context.Films
+                .Where(f => f.Language.LanguageId == Utilities.languageIds[language])
+                .OrderBy(f => f.Title)
+                .Take(limit)
+                .ToListAsync();
+            }
+
+            return NotFound();
+        }
+
         return await _context.Films.OrderBy(f => f.Title).Take(limit).ToListAsync();
     }
 
