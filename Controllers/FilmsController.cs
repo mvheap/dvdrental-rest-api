@@ -18,7 +18,10 @@ public class FilmsController : ControllerBase
 
     // GET films/
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Film>>> GetFilms(int limit = 200, int relaseYear = 0, string language = null)
+    public async Task<ActionResult<IEnumerable<Film>>> GetFilms(int limit = 200,
+    int relaseYear = 0,
+    string language = null,
+    int minDuration = 0, int maxDuration = 0)
     {
         if (relaseYear != 0)
         {
@@ -42,6 +45,21 @@ public class FilmsController : ControllerBase
             }
 
             return NotFound();
+        }
+
+        // the two of the limits of the range have to be provided
+        if (minDuration == 0 ^ maxDuration == 0)
+        {
+            return BadRequest();
+        }
+
+        if (minDuration != 0 && maxDuration != 0)
+        {
+            return await _context.Films
+            .Where(f => f.Length >= minDuration && f.Length <= maxDuration)
+            .OrderBy(f => f.Title)
+            .Take(limit)
+            .ToListAsync();
         }
 
         return await _context.Films.OrderBy(f => f.Title).Take(limit).ToListAsync();
