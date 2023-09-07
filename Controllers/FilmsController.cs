@@ -18,12 +18,12 @@ public class FilmsController : ControllerBase
 
     // GET films/
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Film>>> GetFilms(int limit = 200, int year = 0, string language = null)
+    public async Task<ActionResult<IEnumerable<Film>>> GetFilms(int limit = 200, int relaseYear = 0, string language = null)
     {
-        if (year != 0)
+        if (relaseYear != 0)
         {
             return await _context.Films
-            .Where(f => f.ReleaseYear == year)
+            .Where(f => f.ReleaseYear == relaseYear)
             .OrderBy(f => f.Title)
             .Take(limit)
             .ToListAsync();
