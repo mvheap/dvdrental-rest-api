@@ -100,4 +100,26 @@ public class FilmsController : ControllerBase
         var actors = await query.ToListAsync();
         return actors;
     }
+
+    // GET films/{id}/genre
+    [HttpGet("{id:int:min(1)}/genre")]
+    public async Task<ActionResult<Category>> GetFilmGenre(short id)
+    {
+        var film = await _context.Films.FindAsync(id);
+
+        if (film == null)
+        {
+            return NotFound();
+        }
+
+        var query = from fc in _context.FilmCategories
+                    join f in _context.Films on fc.FilmId equals f.FilmId
+                    join c in _context.Categories on fc.CategoryId equals c.CategoryId
+                    where f.FilmId.Equals(id)
+                    select c;
+
+        var genre = await query.SingleAsync();
+
+        return genre;
+    }
 }
