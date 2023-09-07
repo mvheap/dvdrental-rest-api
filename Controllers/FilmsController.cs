@@ -66,7 +66,7 @@ public class FilmsController : ControllerBase
     }
 
     // GET films/{id}
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int:min(1)}")]
     public async Task<ActionResult<Film>> GetFilm(short id)
     {
         var film = await _context.Films.FindAsync(id);
@@ -80,7 +80,7 @@ public class FilmsController : ControllerBase
     }
 
     // GET films/{id}/actors
-    [HttpGet("{id:int}/actors")]
+    [HttpGet("{id:int:min(1)}/actors")]
     public async Task<ActionResult<IEnumerable<Actor>>> GetFilmCast(short id)
     {
         var film = await _context.Films.FindAsync(id);
