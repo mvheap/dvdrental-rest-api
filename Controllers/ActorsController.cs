@@ -28,7 +28,7 @@ public class ActorsController : ControllerBase
     {
         var actor = await _context.Actors.FindAsync(id);
 
-        if (actor == null)
+        if (actor is null)
         {
             return NotFound();
         }
@@ -42,7 +42,7 @@ public class ActorsController : ControllerBase
     {
         var actor = await _context.Actors.FindAsync(id);
 
-        if (actor == null)
+        if (actor is null)
         {
             return NotFound();
         }

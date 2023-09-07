@@ -71,7 +71,7 @@ public class FilmsController : ControllerBase
     {
         var film = await _context.Films.FindAsync(id);
 
-        if (film == null)
+        if (film is null)
         {
             return NotFound();
         }
@@ -85,7 +85,7 @@ public class FilmsController : ControllerBase
     {
         var film = await _context.Films.FindAsync(id);
 
-        if (film == null)
+        if (film is null)
         {
             return NotFound();
         }
@@ -107,7 +107,7 @@ public class FilmsController : ControllerBase
     {
         var film = await _context.Films.FindAsync(id);
 
-        if (film == null)
+        if (film is null)
         {
             return NotFound();
         }
