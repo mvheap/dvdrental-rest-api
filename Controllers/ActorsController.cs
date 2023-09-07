@@ -35,4 +35,26 @@ public class ActorsController : ControllerBase
 
         return actor;
     }
+
+    // GET actors/{id}/films
+    [HttpGet("{id:int:min(1)}/films")]
+    public async Task<ActionResult<IEnumerable<Film>>> GetMoviesOfActor(short id)
+    {
+        var actor = await _context.Actors.FindAsync(id);
+
+        if (actor == null)
+        {
+            return NotFound();
+        }
+
+        var query = from a in _context.Actors
+                    join fa in _context.FilmActors on a.ActorId equals fa.ActorId
+                    join f in _context.Films on fa.FilmId equals f.FilmId
+                    where a.FirstName.Equals(actor.FirstName) && a.LastName.Equals(actor.LastName)
+                    orderby f.Title ascending
+                    select f;
+
+        var films = await query.ToListAsync();
+        return films;
+    }
 }
