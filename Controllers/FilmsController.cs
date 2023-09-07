@@ -66,7 +66,7 @@ public class FilmsController : ControllerBase
     }
 
     // GET films/{id}
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<Film>> GetFilm(short id)
     {
         var film = await _context.Films.FindAsync(id);

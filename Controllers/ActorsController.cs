@@ -23,7 +23,7 @@ public class ActorsController : ControllerBase
     }
 
     // GET actors/{id}
-    [HttpGet("{id}")]
+    [HttpGet("{id:int:min(1)}")]
     public async Task<ActionResult<Actor>> GetActor(short id)
     {
         var actor = await _context.Actors.FindAsync(id);
