@@ -23,13 +23,22 @@ public class FilmsController : ControllerBase
     string language = null,
     int minDuration = 0, int maxDuration = 0)
     {
+        // Here will be saved the query result because
+        // the user can specify multiple values to search
+        IQueryable<Film> currentQueried = _context.Films;
+
+        // the two of the limits of the range have to be provided
+        if ((minDuration < 0 ^ maxDuration < 0) || minDuration > maxDuration)
+        {
+            return BadRequest();
+        }
+
         if (relaseYear != 0)
         {
-            return await _context.Films
+            currentQueried = currentQueried
             .Where(f => f.ReleaseYear == relaseYear)
             .OrderBy(f => f.Title)
-            .Take(limit)
-            .ToListAsync();
+            .Take(limit);
         }
 
         if (language is not null)
@@ -37,11 +46,10 @@ public class FilmsController : ControllerBase
             language = language.ToLower();
             if (Utilities.languageIds.ContainsKey(language))
             {
-                return await _context.Films
+                currentQueried = currentQueried
                 .Where(f => f.Language.LanguageId == Utilities.languageIds[language])
                 .OrderBy(f => f.Title)
-                .Take(limit)
-                .ToListAsync();
+                .Take(limit);
             }
 
             return NotFound();
@@ -55,14 +63,13 @@ public class FilmsController : ControllerBase
 
         if (minDuration != 0 && maxDuration != 0)
         {
-            return await _context.Films
+            currentQueried = currentQueried
             .Where(f => f.Length >= minDuration && f.Length <= maxDuration)
             .OrderBy(f => f.Title)
-            .Take(limit)
-            .ToListAsync();
+            .Take(limit);
         }
 
-        return await _context.Films.OrderBy(f => f.Title).Take(limit).ToListAsync();
+        return await currentQueried.OrderBy(f => f.Title).Take(limit).ToListAsync();
     }
 
     // GET films/{id}
