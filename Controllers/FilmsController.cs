@@ -55,12 +55,6 @@ public class FilmsController : ControllerBase
             return NotFound();
         }
 
-        // the two of the limits of the range have to be provided
-        if (minDuration == 0 ^ maxDuration == 0)
-        {
-            return BadRequest();
-        }
-
         if (minDuration != 0 && maxDuration != 0)
         {
             currentQueried = currentQueried
