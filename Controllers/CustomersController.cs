@@ -45,4 +45,27 @@ public class CustomersController : ControllerBase
 
         return customer;
     }
+
+    // GET customers/{id}/rental
+    [HttpGet("{id:int:min(1)}/rental")]
+    public async Task<ActionResult<IEnumerable<Film>>> GetRentedFilms(short id)
+    {
+        var customer = await _context.Customers.FindAsync(id);
+
+        if (customer is null)
+        {
+            return NotFound();
+        }
+
+        var query = from c in _context.Customers
+                    join r in _context.Rentals on c.CustomerId equals r.CustomerId
+                    join i in _context.Inventories on r.InventoryId equals i.InventoryId
+                    join f in _context.Films on i.FilmId equals f.FilmId
+                    where c.CustomerId.Equals(id)
+                    orderby f.Title ascending
+                    select f;
+
+        var films = await query.ToListAsync();
+        return films;
+    }
 }
