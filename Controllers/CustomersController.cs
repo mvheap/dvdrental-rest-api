@@ -32,7 +32,7 @@ public class CustomersController : ControllerBase
         return await currentQueried.OrderBy(c => c.FirstName).Take(limit).ToListAsync();
     }
 
-    // GET films/{id}
+    // GET customers/{id}
     [HttpGet("{id:int:min(1)}")]
     public async Task<ActionResult<Customer>> GetCustomerById(short id)
     {
