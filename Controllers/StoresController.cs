@@ -16,6 +16,11 @@ public class StoresController : ControllerBase
     }
 
     // GET stores/
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Store>>> GetStores(int limit = 200)
+    {
+        return await _context.Stores.OrderBy(s => s.StoreId).Take(limit).ToListAsync();
+    }
 
     // GET stores/{id}/staff
 
