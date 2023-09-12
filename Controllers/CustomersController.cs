@@ -6,11 +6,11 @@ namespace dvd_rental_api.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class CustomersControllers : ControllerBase
+public class CustomersController : ControllerBase
 {
     private readonly DvdrentalContext _context;
 
-    public CustomersControllers(DvdrentalContext context)
+    public CustomersController(DvdrentalContext context)
     {
         _context = context;
     }
