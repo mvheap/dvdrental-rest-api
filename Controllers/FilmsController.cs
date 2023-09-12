@@ -37,7 +37,6 @@ public class FilmsController : ControllerBase
         {
             currentQueried = currentQueried
             .Where(f => f.ReleaseYear == relaseYear)
-            .OrderBy(f => f.Title)
             .Take(limit);
         }
 
@@ -48,7 +47,6 @@ public class FilmsController : ControllerBase
             {
                 currentQueried = currentQueried
                 .Where(f => f.Language.LanguageId == Utilities.languageIds[language])
-                .OrderBy(f => f.Title)
                 .Take(limit);
             }
 
@@ -59,7 +57,6 @@ public class FilmsController : ControllerBase
         {
             currentQueried = currentQueried
             .Where(f => f.Length >= minDuration && f.Length <= maxDuration)
-            .OrderBy(f => f.Title)
             .Take(limit);
         }
 
