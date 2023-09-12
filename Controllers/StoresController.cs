@@ -23,5 +23,14 @@ public class StoresController : ControllerBase
     }
 
     // GET stores/{id}/staff
+    [HttpGet("{id:int:min(1)}/staff")]
+    public async Task<ActionResult<IEnumerable<Staff>>> GetStoreStaff(short id)
+    {
+        var store = await _context.Stores.FindAsync((int)id);
+
+        if (store is null)
+        {
+            return NotFound();
+        }
 
 }
