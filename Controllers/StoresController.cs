@@ -33,4 +33,12 @@ public class StoresController : ControllerBase
             return NotFound();
         }
 
+        var query = from stf in _context.Staff
+                    join st in _context.Stores on stf.StoreId equals st.StoreId
+                    where stf.StoreId.Equals(id)
+                    select stf;
+
+        var result = await query.ToListAsync();
+        return result;
+    }
 }
